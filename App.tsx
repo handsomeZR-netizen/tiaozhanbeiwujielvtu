@@ -65,11 +65,11 @@ const App: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content Wrapper */}
-      <div className="flex-1 flex flex-col min-h-screen max-w-md md:max-w-none mx-auto md:mx-0 w-full md:shadow-none shadow-2xl relative overflow-hidden bg-stone-100">
+      {/* Main Content Wrapper - Mobile: fixed height with internal scroll, Desktop: normal flow */}
+      <div className="flex-1 flex flex-col h-screen md:h-auto max-w-md md:max-w-none mx-auto md:mx-0 w-full md:shadow-none shadow-2xl relative md:overflow-visible overflow-hidden bg-stone-100">
         
         {/* Mobile Top Header (Avatar) - Hidden on desktop */}
-        <div className="md:hidden fixed top-0 left-0 right-0 max-w-md mx-auto z-40 p-4 flex justify-between items-start pointer-events-none">
+        <div className="md:hidden absolute top-0 left-0 right-0 z-40 p-4 flex justify-between items-start pointer-events-none">
           <button 
               onClick={() => setShowProfile(true)}
               className="pointer-events-auto bg-white/80 backdrop-blur rounded-full p-2 shadow-sm border border-stone-200 hover:scale-105 transition-transform group" 
@@ -81,8 +81,8 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto">
+        {/* Main Content Area - Mobile: scrollable with padding, Desktop: normal */}
+        <main className="flex-1 overflow-y-auto md:overflow-visible scroll-smooth">
           {currentTab === Tab.HOME && <Home onNavigate={setCurrentTab} />}
           {currentTab === Tab.MAP && <MapPage />}
           {currentTab === Tab.DIARY && <Diary />}
