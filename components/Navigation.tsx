@@ -5,11 +5,12 @@ import { Tab } from '../types';
 interface NavigationProps {
   currentTab: Tab;
   onTabChange: (tab: Tab) => void;
+  isDesktop?: boolean;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ currentTab, onTabChange }) => {
+export const Navigation: React.FC<NavigationProps> = ({ currentTab, onTabChange, isDesktop = false }) => {
   const getIcon = (tab: Tab) => {
-    const size = 22;
+    const size = isDesktop ? 20 : 22;
     const strokeWidth = 1.5;
     switch (tab) {
       case Tab.HOME:
@@ -40,6 +41,36 @@ export const Navigation: React.FC<NavigationProps> = ({ currentTab, onTabChange 
     }
   };
 
+  // Desktop Sidebar Navigation
+  if (isDesktop) {
+    return (
+      <>
+        {Object.values(Tab).map((tab) => {
+          const isActive = currentTab === tab;
+          return (
+            <button
+              key={tab}
+              onClick={() => onTabChange(tab)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-200 ${
+                isActive 
+                  ? 'bg-red-50 text-stamp border-l-2 border-stamp' 
+                  : 'text-stone-600 hover:bg-stone-50 hover:text-ink border-l-2 border-transparent'
+              }`}
+            >
+              <div className="shrink-0">
+                {getIcon(tab)}
+              </div>
+              <span className={`text-sm font-serif ${isActive ? 'font-bold' : 'font-medium'}`}>
+                {getLabel(tab)}
+              </span>
+            </button>
+          );
+        })}
+      </>
+    );
+  }
+
+  // Mobile Bottom Navigation
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-paper/95 backdrop-blur-md border-t border-stone-200 pb-safe pt-2 px-6 z-50 shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.05)]">
       <div className="flex justify-between items-end pb-3 max-w-md mx-auto">
