@@ -1,0 +1,8 @@
+{
+  "name": "Boundless Lens (无界旅图)",
+  "description": "A youth diplomacy and visual storytelling app connecting impressions with reality.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
