@@ -21,7 +21,7 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       location?: string;
       radius?: string;
     };
-    if (isMockMode()) {
+    if (isMockMode() || !process.env.AMAP_WEB_SERVICE_KEY) {
       return ok({
         city: city ?? '北京',
         keyword: keyword ?? '',
@@ -47,14 +47,19 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       }
       return ok(result);
     } catch (error: any) {
-      reply.status(500);
-      return fail(error.message || 'Map POI request failed.');
+      app.log.warn({ error: error.message }, 'Map POI request failed, fallback to mock.');
+      return ok({
+        city: city ?? '北京',
+        keyword: keyword ?? '',
+        items: mapRecommendations,
+        warning: 'amap_failed_fallback_mock',
+      });
     }
   });
 
   app.get('/map/route', async (request, reply) => {
     const { from, to, mode } = request.query as { from?: string; to?: string; mode?: string };
-    if (isMockMode()) {
+    if (isMockMode() || !process.env.AMAP_WEB_SERVICE_KEY) {
       return ok({
         from: from ?? '116.379028,39.865042',
         to: to ?? '116.427281,39.903719',
@@ -84,14 +89,25 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       const result = await getWalkingRoute(from ?? '116.379028,39.865042', to ?? '116.427281,39.903719');
       return ok(result);
     } catch (error: any) {
-      reply.status(500);
-      return fail(error.message || 'Map route request failed.');
+      app.log.warn({ error: error.message }, 'Map route request failed, fallback to mock.');
+      return ok({
+        from: from ?? '116.379028,39.865042',
+        to: to ?? '116.427281,39.903719',
+        distanceMeters: 4200,
+        durationSeconds: 1800,
+        steps: [
+          { instruction: '向北直行 300 米' },
+          { instruction: '右转进入主路' },
+          { instruction: '到达目的地' },
+        ],
+        warning: 'amap_failed_fallback_mock',
+      });
     }
   });
 
   app.get('/map/weather', async (request, reply) => {
     const { city } = request.query as { city?: string };
-    if (isMockMode()) {
+    if (isMockMode() || !process.env.AMAP_WEB_SERVICE_KEY) {
       return ok({
         city: city ?? '北京',
         weather: '晴',
@@ -104,14 +120,20 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       const result = await getWeather(city ?? '北京');
       return ok(result);
     } catch (error: any) {
-      reply.status(500);
-      return fail(error.message || 'Map weather request failed.');
+      app.log.warn({ error: error.message }, 'Map weather request failed, fallback to mock.');
+      return ok({
+        city: city ?? '北京',
+        weather: '晴',
+        temperature: '24°C',
+        windDirection: '东北风',
+        warning: 'amap_failed_fallback_mock',
+      });
     }
   });
 
   app.get('/map/geocode', async (request, reply) => {
     const { address } = request.query as { address?: string };
-    if (isMockMode()) {
+    if (isMockMode() || !process.env.AMAP_WEB_SERVICE_KEY) {
       return ok({
         address: address ?? '天安门广场',
         location: { lng: 116.397428, lat: 39.90923 },
@@ -122,14 +144,18 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       const result = await geocodeAddress(address ?? '天安门广场');
       return ok(result);
     } catch (error: any) {
-      reply.status(500);
-      return fail(error.message || 'Map geocode request failed.');
+      app.log.warn({ error: error.message }, 'Map geocode request failed, fallback to mock.');
+      return ok({
+        address: address ?? '天安门广场',
+        location: { lng: 116.397428, lat: 39.90923 },
+        warning: 'amap_failed_fallback_mock',
+      });
     }
   });
 
   app.get('/map/regeo', async (request, reply) => {
     const { location } = request.query as { location?: string };
-    if (isMockMode()) {
+    if (isMockMode() || !process.env.AMAP_WEB_SERVICE_KEY) {
       return ok({
         regeocode: {
           addressComponent: {
@@ -146,8 +172,17 @@ export const registerMapRoutes = async (app: FastifyInstance) => {
       const result = await reverseGeocode(loc);
       return ok(result);
     } catch (error: any) {
-      reply.status(500);
-      return fail(error.message || 'Map reverse geocode request failed.');
+      app.log.warn({ error: error.message }, 'Map reverse geocode request failed, fallback to mock.');
+      return ok({
+        regeocode: {
+          addressComponent: {
+            city: '北京',
+            province: '北京',
+            district: '东城区',
+          },
+        },
+        warning: 'amap_failed_fallback_mock',
+      });
     }
   });
 };

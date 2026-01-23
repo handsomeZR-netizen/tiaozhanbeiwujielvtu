@@ -1,0 +1,362 @@
+{
+  "posts": [
+    {
+      "id": "post-01",
+      "title": "南京｜在百年学府感受时光的厚度",
+      "user": {
+        "name": "艾玛",
+        "country": "德国",
+        "avatar": "emma-de"
+      },
+      "timestamp": "2026/01/15 14:20",
+      "content": "随园校区的建筑是民国风格，红砖墙、拱形窗、梧桐树。我坐在图书馆前的长椅上，看学生们来来往往。这里不只是校园，更像是一座活着的历史博物馆。",
+      "tags": ["#南京", "#随园", "#民国建筑", "#校园"],
+      "location": "南京",
+      "cost": "0 元（校园开放）",
+      "culturalTip": "随园校区前身为金陵女子大学，是中国第一所女子大学",
+      "image": "post-01-nanjing-suiyuan.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 312,
+      "comments": 24
+    },
+    {
+      "id": "post-02",
+      "title": "南京｜玄武湖的清晨，城市还在睡梦中",
+      "user": {
+        "name": "托马斯",
+        "country": "瑞典",
+        "avatar": "thomas-se"
+      },
+      "timestamp": "2026/01/16 06:30",
+      "content": "早上 6 点的玄武湖，薄雾笼罩湖面，远处的紫金山若隐若现。晨练的人们在湖边打太极、跑步。我租了一辆自行车环湖骑行，感受这座城市苏醒的节奏。",
+      "tags": ["#南京", "#玄武湖", "#晨练", "#湖景"],
+      "location": "南京",
+      "cost": "15 元（自行车租赁）",
+      "culturalTip": "玄武湖是中国最大的皇家园林湖泊，有 1500 多年历史",
+      "image": "post-02-nanjing-xuanwu.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 267,
+      "comments": 19
+    },
+    {
+      "id": "post-03",
+      "title": "南京｜鸡鸣寺的樱花，是春天最温柔的信号",
+      "user": {
+        "name": "由纪",
+        "country": "日本",
+        "avatar": "yuki-jp"
+      },
+      "timestamp": "2026/03/25 15:00",
+      "content": "鸡鸣寺路两旁的樱花盛开，粉白色的花瓣随风飘落。古寺的黄墙在樱花的映衬下格外醒目。我发现这里的樱花和日本的不太一样——它们更野性，更自由。",
+      "tags": ["#南京", "#鸡鸣寺", "#樱花", "#春天"],
+      "location": "南京",
+      "cost": "10 元（门票）",
+      "culturalTip": "鸡鸣寺是南京最古老的梵刹之一，樱花季是南京最美的时刻",
+      "image": "post-03-nanjing-jiming.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 489,
+      "comments": 52
+    },
+    {
+      "id": "post-04",
+      "title": "南京｜392 级台阶，是对历史的致敬",
+      "user": {
+        "name": "卡洛斯",
+        "country": "西班牙",
+        "avatar": "carlos-es"
+      },
+      "timestamp": "2026/01/18 10:00",
+      "content": "从山脚到祭堂，392 级台阶。每一步都能感受到建筑的庄严和历史的厚重。站在最高处回望，整个南京城尽收眼底。这不只是一座陵墓，更是一个时代的记忆。",
+      "tags": ["#南京", "#中山陵", "#历史", "#建筑"],
+      "location": "南京",
+      "cost": "0 元（免费开放）",
+      "culturalTip": "中山陵是孙中山先生陵寝，中国近代建筑史上的杰作",
+      "image": "post-04-nanjing-zhongshan.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 356,
+      "comments": 28
+    },
+    {
+      "id": "post-05",
+      "title": "南京｜梧桐树下的城市记忆",
+      "user": {
+        "name": "莎拉",
+        "country": "英国",
+        "avatar": "sarah-uk"
+      },
+      "timestamp": "2026/01/17 15:00",
+      "content": "中山东路两旁的梧桐树形成了绿色隧道。阳光透过树叶洒下斑驳的影子。本地人说这些树有近百年历史，见证了南京的变迁。我骑着共享单车穿过，感觉像穿越了时光。",
+      "tags": ["#南京", "#梧桐", "#城市记忆", "#骑行"],
+      "location": "南京",
+      "cost": "1.5 元（共享单车）",
+      "culturalTip": "南京梧桐是城市标志，承载历史记忆",
+      "image": "post-05-nanjing-sycamore.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 201,
+      "comments": 14
+    },
+    {
+      "id": "post-06",
+      "title": "北京｜一条胡同的时间感",
+      "user": {
+        "name": "艾玛",
+        "country": "德国",
+        "avatar": "emma-de"
+      },
+      "timestamp": "2026/01/15 14:20",
+      "content": "小巷很短，却能让人走慢。砖墙上的光影在移动，老人坐在门口晒太阳，猫在台阶上打盹。我发现这里的时间和主街不一样——它有自己的节奏。",
+      "tags": ["#胡同", "#北京", "#慢生活", "#城市漫步"],
+      "location": "北京",
+      "cost": "0 元（步行）",
+      "culturalTip": "胡同是北京传统居住区，保留了老北京的生活方式",
+      "image": "post-06-beijing-hutong.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 234,
+      "comments": 18
+    },
+    {
+      "id": "post-07",
+      "title": "杭州｜第一次在清晨听见河坊街的开门声",
+      "user": {
+        "name": "安娜",
+        "country": "法国",
+        "avatar": "anna-fr"
+      },
+      "timestamp": "2026/01/08 07:45",
+      "content": "早上 7 点，店铺一家家打开木门，声音像多米诺骨牌。空气里有桂花香和豆浆味。我站在街口，看着这条街'醒来'。",
+      "tags": ["#杭州", "#河坊街", "#清晨", "#城市观察"],
+      "location": "杭州",
+      "cost": "15 元（早餐）",
+      "culturalTip": "河坊街是杭州历史文化街区，保留传统商业形态",
+      "image": "post-07-hangzhou-hefang.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 189,
+      "comments": 12
+    },
+    {
+      "id": "post-08",
+      "title": "成都｜茶馆不是"喝茶"，是一个城市的社交节奏",
+      "user": {
+        "name": "迈克",
+        "country": "美国",
+        "avatar": "mike-us"
+      },
+      "timestamp": "2026/01/12 15:30",
+      "content": "我在人民公园的茶馆坐了一下午。周围的人打牌、聊天、掏耳朵。我发现'喝茶'只是形式，真正的内容是'在一起的时间'。这是成都人的社交方式。",
+      "tags": ["#成都", "#茶馆", "#社交文化", "#慢生活"],
+      "location": "成都",
+      "cost": "30 元（茶水 + 小吃）",
+      "culturalTip": "成都茶馆文化是重要的社交空间，体现"巴适"生活态度",
+      "image": "post-08-chengdu-teahouse.jpg",
+      "pillar": "城市文化微叙事",
+      "likes": 312,
+      "comments": 24
+    },
+    {
+      "id": "post-09",
+      "title": "苏州｜我花了 2 小时绣了一朵小花",
+      "user": {
+        "name": "索菲亚",
+        "country": "意大利",
+        "avatar": "sofia-it"
+      },
+      "timestamp": "2026/01/18 16:00",
+      "content": "师傅说'慢工出细活'。我的手一直在抖，线总是打结。但当那朵小花终于成型时，我理解了为什么苏绣能传承千年——它需要的不只是技巧，还有耐心和敬意。",
+      "tags": ["#苏州", "#刺绣", "#非遗体验", "#手作日记"],
+      "location": "苏州",
+      "cost": "180 元（体验课程）",
+      "culturalTip": "苏绣是中国四大名绣之一，UNESCO 非物质文化遗产",
+      "image": "post-09-suzhou-embroidery.jpg",
+      "pillar": "非遗/传统工艺体验",
+      "likes": 267,
+      "comments": 31
+    },
+    {
+      "id": "post-10",
+      "title": "景德镇｜泥土在手中"活"了起来",
+      "user": {
+        "name": "大卫",
+        "country": "澳大利亚",
+        "avatar": "david-au"
+      },
+      "timestamp": "2026/01/10 10:30",
+      "content": "转盘开始旋转，泥土在我手心慢慢升起。师傅说'要感受它的呼吸'。我不太懂，但当那个碗成型的瞬间，我确实感觉到了某种'对话'。",
+      "tags": ["#景德镇", "#陶瓷", "#手作体验", "#传统工艺"],
+      "location": "景德镇",
+      "cost": "200 元（体验 + 烧制）",
+      "culturalTip": "景德镇是"瓷都"，制瓷历史超过 1700 年",
+      "image": "post-10-jingdezhen-pottery.jpg",
+      "pillar": "非遗/传统工艺体验",
+      "likes": 198,
+      "comments": 15
+    },
+    {
+      "id": "post-11",
+      "title": "西安｜夜市的烟火气是最好的欢迎仪式",
+      "user": {
+        "name": "由纪",
+        "country": "日本",
+        "avatar": "yuki-jp"
+      },
+      "timestamp": "2026/01/14 20:15",
+      "content": "羊肉泡馍的香味、吆喝声、红灯笼的光。我在回民街走了两个小时，手里拿着肉夹馍，感觉自己真的'到了'西安。",
+      "tags": ["#西安", "#夜市", "#美食", "#夜间经济"],
+      "location": "西安",
+      "cost": "80 元（晚餐 + 小吃）",
+      "culturalTip": "回民街是西安著名美食街区，体现多元文化融合",
+      "image": "post-11-xian-night-market.jpg",
+      "pillar": "城市夜间经济/夜景",
+      "likes": 421,
+      "comments": 37
+    },
+    {
+      "id": "post-12",
+      "title": "上海｜外滩的夜晚，是历史与未来的对话",
+      "user": {
+        "name": "詹姆斯",
+        "country": "美国",
+        "avatar": "james-us"
+      },
+      "timestamp": "2026/01/16 21:00",
+      "content": "黄浦江两岸：一边是万国建筑的古典灯光，一边是陆家嘴的现代霓虹。我站在中间，感觉像站在时间的交界处。",
+      "tags": ["#上海", "#外滩", "#夜景", "#城市观察"],
+      "location": "上海",
+      "cost": "0 元（步行观景）",
+      "culturalTip": "外滩建筑群展现上海近代历史，对岸是现代金融中心",
+      "image": "post-12-shanghai-bund.jpg",
+      "pillar": "城市夜间经济/夜景",
+      "likes": 356,
+      "comments": 28
+    },
+    {
+      "id": "post-13",
+      "title": "广州｜早茶教会我的第一件事：慢下来",
+      "user": {
+        "name": "艾米丽",
+        "country": "加拿大",
+        "avatar": "emily-ca"
+      },
+      "timestamp": "2026/01/09 09:30",
+      "content": "点心一笼笼上来，茶水不断续杯。本地人告诉我'饮茶'不是吃早餐，是一种生活方式。我学会了用筷子夹虾饺，也学会了在周末的早晨，不着急。",
+      "tags": ["#广州", "#早茶", "#饮食文化", "#生活方式"],
+      "location": "广州",
+      "cost": "60 元（早茶）",
+      "culturalTip": "广东早茶是重要社交活动，"一盅两件"体现慢生活哲学",
+      "image": "post-13-guangzhou-dimsum.jpg",
+      "pillar": "饮食文化与礼仪",
+      "likes": 289,
+      "comments": 22
+    },
+    {
+      "id": "post-14",
+      "title": "重庆｜火锅不只是辣，是一种"共享"的仪式",
+      "user": {
+        "name": "马克",
+        "country": "荷兰",
+        "avatar": "mark-nl"
+      },
+      "timestamp": "2026/01/11 19:45",
+      "content": "红油翻滚，所有人围着一口锅。我发现火锅的魅力不在于食材，而在于'一起涮、一起等、一起吃'的过程。这是一种很温暖的社交方式。",
+      "tags": ["#重庆", "#火锅", "#美食文化", "#社交"],
+      "location": "重庆",
+      "cost": "120 元（火锅）",
+      "culturalTip": "重庆火锅体现"麻辣"文化和集体用餐传统",
+      "image": "post-14-chongqing-hotpot.jpg",
+      "pillar": "饮食文化与礼仪",
+      "likes": 378,
+      "comments": 41
+    },
+    {
+      "id": "post-15",
+      "title": "北京｜公园的早晨，是一座城市的"起床仪式"",
+      "user": {
+        "name": "艾米丽",
+        "country": "加拿大",
+        "avatar": "emily-ca"
+      },
+      "timestamp": "2026/01/13 06:30",
+      "content": "太极、广场舞、踢毽子、唱京剧。我在天坛公园看了一个小时，每个人都在做自己的事，但又形成了一种和谐的节奏。这是我见过最有活力的'老年生活'。",
+      "tags": ["#北京", "#晨练", "#公园", "#生活方式"],
+      "location": "北京",
+      "cost": "0 元（观察）",
+      "culturalTip": "公园晨练是中国城市特色，体现积极养生文化",
+      "image": "post-15-beijing-park.jpg",
+      "pillar": "城市公共空间与生活方式",
+      "likes": 245,
+      "comments": 19
+    },
+    {
+      "id": "post-16",
+      "title": "上海｜我用手机买了一个煎饼果子",
+      "user": {
+        "name": "马克",
+        "country": "荷兰",
+        "avatar": "mark-nl"
+      },
+      "timestamp": "2026/01/19 08:00",
+      "content": "摊主阿姨教我扫码支付，整个过程 3 秒钟。她还用翻译 app 问我'要不要加辣'。我突然意识到，语言不通也能完成一次完美的早餐交易。这座城市比我想象的更友好。",
+      "tags": ["#上海", "#移动支付", "#入境体验", "#友好城市"],
+      "location": "上海",
+      "cost": "8 元（煎饼果子）",
+      "culturalTip": "中国移动支付普及，外国游客可使用国际信用卡绑定",
+      "image": "post-16-shanghai-jianbing.jpg",
+      "pillar": "入境便利体验",
+      "likes": 412,
+      "comments": 33
+    }
+  ],
+  "pillars": [
+    {
+      "id": "pillar-1",
+      "name": "城市文化微叙事",
+      "description": "真实游客/本地人讲述城市气味、声响、路口、老街的具体细节",
+      "postIds": ["post-01", "post-02", "post-03", "post-04", "post-05", "post-06", "post-07", "post-08"]
+    },
+    {
+      "id": "pillar-2",
+      "name": "非遗/传统工艺体验",
+      "description": "强调体验过程 + 手作细节 + 地点与人",
+      "postIds": ["post-09", "post-10"]
+    },
+    {
+      "id": "pillar-3",
+      "name": "城市夜间经济/夜景",
+      "description": "夜市、灯会、夜游路线",
+      "postIds": ["post-11", "post-12"]
+    },
+    {
+      "id": "pillar-4",
+      "name": "饮食文化与礼仪",
+      "description": "菜系、点单体验、文化礼仪差异",
+      "postIds": ["post-13", "post-14"]
+    },
+    {
+      "id": "pillar-5",
+      "name": "城市公共空间与生活方式",
+      "description": "广场舞、公园、早茶、晨练",
+      "postIds": ["post-15"]
+    },
+    {
+      "id": "pillar-6",
+      "name": "入境便利体验",
+      "description": "支付、交通、城市导览、英语友好度等真实评价",
+      "postIds": ["post-16"]
+    }
+  ],
+  "tags": [
+    "#城市漫步",
+    "#文化观察",
+    "#手作日记",
+    "#摄影日记",
+    "#美食文化",
+    "#非遗体验",
+    "#夜间经济",
+    "#生活方式",
+    "#入境体验",
+    "#南京",
+    "#随园",
+    "#玄武湖",
+    "#鸡鸣寺",
+    "#中山陵"
+  ]
+}

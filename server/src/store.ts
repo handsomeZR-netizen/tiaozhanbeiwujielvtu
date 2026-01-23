@@ -45,10 +45,18 @@ export type PosterEntry = {
   language?: string;
   platform?: string;
   size?: string;
+  promptRaw?: string;
+  promptPolished?: string;
   prompt: string;
   imageUrl: string;
   copyTitle?: string;
   copySubtitle?: string;
+  copyTitleRaw?: string;
+  copySubtitleRaw?: string;
+  copyTitlePolished?: string;
+  copySubtitlePolished?: string;
+  shareZh?: string;
+  shareEn?: string;
   tags?: string[];
   createdAt: string;
 };

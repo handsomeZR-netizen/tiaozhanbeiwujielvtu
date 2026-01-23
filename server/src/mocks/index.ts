@@ -81,3 +81,36 @@ export const aiMockResult = {
   },
   tags: ['#夜景', '#城市生活', '#文化体验'],
 };
+
+export const cultureMockResult = {
+  elements: ['红灯笼', '牌匾字体', '胡同门楼', '灰砖瓦'],
+  insights: [
+    {
+      title: '红灯笼',
+      subtitle: 'Red Lantern',
+      tags: ['#喜庆', '#团圆', '#节日'],
+      description: '红灯笼在中国传统文化中象征喜庆与团圆，常见于春节、婚礼等节庆场景。',
+      detailedContent:
+        '在中国街巷与庙会中，红灯笼不仅是装饰，也是一种情绪符号。它代表着温暖、团聚与祝福，提醒游客这是一个“值得庆祝的时刻”。',
+    },
+    {
+      title: '牌匾字体',
+      subtitle: 'Signboard Calligraphy',
+      tags: ['#书法', '#匠心', '#传统'],
+      description: '牌匾上的书法体现了店铺或建筑的身份与气质，是传统审美的一种表达。',
+      detailedContent:
+        '很多老店与古建筑会保留牌匾，它既是“招牌”，也是文化“名片”。观察字体的笔触与布局，可以感受传统书法的力量。',
+    },
+  ],
+  tips: [
+    '在寺庙或祠堂拍照前，请先确认是否允许拍摄。',
+    '拍摄街巷灯笼可选择傍晚时分，光影更柔和。',
+    '与当地居民互动时保持友善与尊重，避免打扰私人生活。',
+  ],
+  share: {
+    zh: '我在中国街头看到了红灯笼，它象征喜庆与团圆。',
+    en: 'I saw red lanterns in China, a symbol of joy and reunion.',
+  },
+};
+
+export { storyMockArc } from './story.js';

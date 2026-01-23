@@ -69,10 +69,30 @@
   "language": "bilingual",
   "platform": "Instagram",
   "size": "1024x1024",
-  "keywords": ["夜景", "徽派建筑"]
+  "keywords": ["夜景", "徽派建筑"],
+  "prompt": "夜色下的徽派街巷，暖色灯笼光影",
+  "promptPolished": "暖灯下的徽派街巷夜景",
+  "copyTitlePolished": "合肥路",
+  "copySubtitlePolished": "徽风夜色"
 }
 ```
-返回生成的海报记录（含 imageUrl / copyTitle / copySubtitle）。
+返回生成的海报记录（含 imageUrl / copyTitle / copySubtitle / shareZh / shareEn）。
+
+### POST /posters/polish
+请求体与 `/posters/generate` 相同，用于文案润色。
+```json
+{
+  "city": "合肥",
+  "theme": "文化地标",
+  "style": "国潮",
+  "language": "bilingual",
+  "platform": "Instagram",
+  "size": "1024x1024",
+  "keywords": ["夜景", "徽派建筑"],
+  "prompt": "夜色下的徽派街巷，暖色灯笼光影"
+}
+```
+返回润色结果（copyTitlePolished / copySubtitlePolished / promptPolished）。
 
 ### DELETE /posters/:id
 删除海报历史记录并返回 `{ id }`。
@@ -139,6 +159,18 @@
 - Real：调用高德逆地理编码
 
 ## AI 流水线（Mock 可切换）
+### POST /ai/culture
+请求体：
+```json
+{
+  "imageUrl": "https://...",
+  "preferences": ["建筑与街巷", "民俗与节庆"]
+}
+```
+- Mock：返回固定文化识别结果
+- Real：Doubao 多模态识别 + 文化意象结构化输出
+- 支持 data URL（服务端会暂存为 /uploads 并转换为可访问 URL）
+
 ### POST /ai/scene
 请求体：`{ "text": "描述图片", "imageUrl": "https://..." }`
 - Mock：返回固定场景
@@ -173,6 +205,7 @@
 PORT=8787
 HOST=0.0.0.0
 MOCK_MODE=true
+PUBLIC_BASE_URL=http://localhost:8787
 AMAP_WEB_SERVICE_KEY=your_amap_web_service_key
 DEEPSEEK_API_KEY=your_deepseek_api_key
 ARK_API_KEY=your_ark_api_key

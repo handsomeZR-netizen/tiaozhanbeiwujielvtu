@@ -9,9 +9,14 @@ import { registerAiRoutes } from './ai.js';
 import { registerModerationRoutes } from './moderation.js';
 import { registerAtlasRoutes } from './atlas.js';
 import { registerPosterRoutes } from './posters.js';
+import { registerAuthRoutes } from './auth.js';
+import { registerStudioRoutes } from './studio.js';
+import { registerStoryRoutes } from './story.js';
+import { registerItineraryRoutes } from './itineraries.js';
 
 export const registerRoutes = async (app: FastifyInstance) => {
   await registerHealthRoutes(app);
+  await registerAuthRoutes(app);
   await registerShareRoutes(app);
   await registerUserRoutes(app);
   await registerDiaryRoutes(app);
@@ -21,4 +26,7 @@ export const registerRoutes = async (app: FastifyInstance) => {
   await registerModerationRoutes(app);
   await registerAtlasRoutes(app);
   await registerPosterRoutes(app);
+  await registerStudioRoutes(app);
+  await registerStoryRoutes(app);
+  await registerItineraryRoutes(app);
 };

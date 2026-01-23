@@ -15,22 +15,27 @@ export const multimodalDescribe = async (payload: {
   }
   content.push({ type: 'input_text', text: payload.text });
 
-  return fetchJson<any>(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
+  return fetchJson<any>(
+    url,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'doubao-seed-1-8-251228',
+        input: [{ role: 'user', content }],
+      }),
     },
-    body: JSON.stringify({
-      model: 'doubao-seed-1-8-251228',
-      input: [{ role: 'user', content }],
-    }),
-  });
+    60000,
+  );
 };
 
-export const generateImage = async (prompt: string) => {
+export const generateImage = async (prompt: string, size: string = '2048x2048') => {
   const apiKey = requireEnv('ARK_API_KEY');
   const url = `${ARK_BASE}/images/generations`;
+  // Use 60 second timeout for image generation
   return fetchJson<any>(url, {
     method: 'POST',
     headers: {
@@ -41,9 +46,10 @@ export const generateImage = async (prompt: string) => {
       model: 'doubao-seedream-4-5-251128',
       prompt,
       response_format: 'url',
-      size: '1024x1024',
+      size,
+      watermark: false,
     }),
-  });
+  }, 60000);
 };
 
 export const createVideoTask = async (prompt: string, imageUrl?: string) => {

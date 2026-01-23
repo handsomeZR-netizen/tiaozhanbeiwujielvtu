@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { getPool } from '../db.js';
 import { store } from '../store.js';
 import { ok, fail } from '../utils/response.js';
+import { requireAuthUser } from '../utils/auth.js';
 
 type DiaryInput = {
   title?: string;
@@ -46,18 +47,23 @@ const mapRow = (row: {
 });
 
 export const registerDiaryRoutes = async (app: FastifyInstance) => {
-  app.get('/diaries', async () => {
+  app.get('/diaries', async (request, reply) => {
+    const user = await requireAuthUser(request, reply);
+    if (!user) return;
     if (isMockMode()) {
       return ok(store.listDiaries());
     }
     const db = getPool();
     const result = await db.query(
-      'SELECT id, title, content, media_urls, location, tags, created_at, updated_at FROM diaries ORDER BY created_at DESC',
+      'SELECT id, title, content, media_urls, location, tags, created_at, updated_at FROM diaries WHERE user_id = $1 ORDER BY created_at DESC',
+      [user.id],
     );
     return ok(result.rows.map(mapRow));
   });
 
   app.get('/diaries/:id', async (request, reply) => {
+    const user = await requireAuthUser(request, reply);
+    if (!user) return;
     const { id } = request.params as { id: string };
     if (isMockMode()) {
       const entry = store.listDiaries().find((item) => item.id === id);
@@ -69,8 +75,8 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
     }
     const db = getPool();
     const result = await db.query(
-      'SELECT id, title, content, media_urls, location, tags, created_at, updated_at FROM diaries WHERE id = $1',
-      [id],
+      'SELECT id, title, content, media_urls, location, tags, created_at, updated_at FROM diaries WHERE id = $1 AND user_id = $2',
+      [id, user.id],
     );
     if (result.rowCount === 0) {
       reply.status(404);
@@ -80,6 +86,8 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
   });
 
   app.post('/diaries', async (request, reply) => {
+    const user = await requireAuthUser(request, reply);
+    if (!user) return;
     const body = request.body as DiaryInput;
 
     if (!body?.title || !body?.content) {
@@ -105,15 +113,17 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
     const mediaUrls = Array.isArray(body.mediaUrls) ? body.mediaUrls : [];
     const tags = Array.isArray(body.tags) ? body.tags : [];
     const result = await db.query(
-      `INSERT INTO diaries (id, title, content, media_urls, location, tags)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO diaries (id, user_id, title, content, media_urls, location, tags)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, title, content, media_urls, location, tags, created_at, updated_at`,
-      [id, body.title, body.content, mediaUrls, body.location ?? null, tags],
+      [id, user.id, body.title, body.content, mediaUrls, body.location ?? null, tags],
     );
     return ok(mapRow(result.rows[0]));
   });
 
   app.patch('/diaries/:id', async (request, reply) => {
+    const user = await requireAuthUser(request, reply);
+    if (!user) return;
     const { id } = request.params as { id: string };
     const body = request.body as DiaryInput;
 
@@ -123,7 +133,7 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
     }
 
     const db = getPool();
-    const existing = await db.query('SELECT id FROM diaries WHERE id = $1', [id]);
+    const existing = await db.query('SELECT id FROM diaries WHERE id = $1 AND user_id = $2', [id, user.id]);
     if (existing.rowCount === 0) {
       reply.status(404);
       return fail('Diary not found.');
@@ -140,15 +150,25 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
            location = COALESCE($5, location),
            tags = COALESCE($6, tags),
            updated_at = NOW()
-       WHERE id = $1
+       WHERE id = $1 AND user_id = $7
        RETURNING id, title, content, media_urls, location, tags, created_at, updated_at`,
-      [id, body.title ?? null, body.content ?? null, mediaUrls ?? null, body.location ?? null, tags ?? null],
+      [
+        id,
+        body.title ?? null,
+        body.content ?? null,
+        mediaUrls ?? null,
+        body.location ?? null,
+        tags ?? null,
+        user.id,
+      ],
     );
 
     return ok(mapRow(result.rows[0]));
   });
 
   app.delete('/diaries/:id', async (request, reply) => {
+    const user = await requireAuthUser(request, reply);
+    if (!user) return;
     const { id } = request.params as { id: string };
     if (isMockMode()) {
       reply.status(400);
@@ -156,7 +176,10 @@ export const registerDiaryRoutes = async (app: FastifyInstance) => {
     }
 
     const db = getPool();
-    const result = await db.query('DELETE FROM diaries WHERE id = $1 RETURNING id', [id]);
+    const result = await db.query('DELETE FROM diaries WHERE id = $1 AND user_id = $2 RETURNING id', [
+      id,
+      user.id,
+    ]);
     if (result.rowCount === 0) {
       reply.status(404);
       return fail('Diary not found.');

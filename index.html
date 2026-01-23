@@ -5,18 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>无界旅图 Boundless Lens</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@300;400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              serif: ['"Noto Serif SC"', '"Crimson Text"', 'serif'],
+              sans: ['"Noto Sans SC"', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Microsoft YaHei"', 'sans-serif'],
+              serif: ['"Noto Serif SC"', '"Source Han Serif SC"', '"Songti SC"', '"STSong"', '"SimSun"', '"Crimson Text"', 'serif'],
+              display: ['"Playfair Display"', '"Crimson Text"', '"Noto Serif SC"', '"Source Han Serif SC"', '"Songti SC"', '"STSong"', '"SimSun"', 'serif'],
+              brandSans: ['Inter', '"Noto Sans SC"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', '"Microsoft YaHei"', 'sans-serif'],
             },
             colors: {
+              brand: {
+                50: '#fcfbf9',
+                100: '#f5f2eb',
+                200: '#e8e2d2',
+                300: '#d5cbb0',
+                800: '#4a4539',
+                900: '#2c2923',
+                accent: '#9f3e3e',
+              },
               paper: '#fdfbf7', // 更温暖的米纸色
-              ink: '#2c2c2c', // 柔和的墨黑
+              ink: {
+                DEFAULT: '#2c2c2c', // 柔和的墨黑
+                900: '#1a1a1a',
+                800: '#2d2d2d',
+                700: '#3b3b3b',
+                600: '#4b4b4b',
+                500: '#575757',
+                400: '#8b8b8b',
+                100: '#f5f5f7',
+                50: '#fafafa',
+              },
               sub: '#5d5d5d', // 次级文字灰
               stamp: '#8b1a10', // 中国印泥红
               accent: '#2e5c55', // 故宫绿/青绿山水色
@@ -26,22 +47,58 @@
               'float': '0 10px 30px rgba(0,0,0,0.12)',
             },
             animation: {
-              'fade-in': 'fadeIn 0.8s ease-out',
-              'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'slide-in': 'slideIn 0.3s ease-out',
               'float': 'float 3s ease-in-out infinite',
+              'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shimmer': 'shimmer 2s linear infinite',
+              'scan': 'scan 2s linear infinite',
+              'gradient': 'gradient 8s ease infinite',
+              'share-pop': 'sharePop 0.5s ease-out',
+              'share-collapse': 'shareCollapse 0.6s ease-in forwards',
             },
             keyframes: {
               fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
               },
               slideUp: {
-                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '0%': { transform: 'translateY(30px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              slideIn: {
+                '0%': { transform: 'translateY(10px)', opacity: '0' },
                 '100%': { transform: 'translateY(0)', opacity: '1' },
               },
               float: {
                 '0%, 100%': { transform: 'translateY(0)' },
                 '50%': { transform: 'translateY(-5px)' },
+              },
+              pulse: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0.5' },
+              },
+              shimmer: {
+                '0%': { backgroundPosition: '-1000px 0' },
+                '100%': { backgroundPosition: '1000px 0' },
+              },
+              gradient: {
+                '0%, 100%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+              },
+              scan: {
+                '0%': { top: '0%' },
+                '100%': { top: '100%' },
+              },
+              sharePop: {
+                '0%': { opacity: '0', transform: 'translateY(20px) scale(0.95)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+              },
+              shareCollapse: {
+                '0%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                '100%': { opacity: '0', transform: 'translateY(260px) scale(0.2)' },
               }
             }
           },
@@ -51,7 +108,7 @@
     <style>
       body {
         background-color: #f2f0ea; /* 外框底色 */
-        font-family: 'Noto Serif SC', serif;
+        font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
       }
       /* Custom scrollbar hide */
       .no-scrollbar::-webkit-scrollbar {
@@ -61,9 +118,142 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+      /* Custom scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e8e2d2;
+        border-radius: 3px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #d5cbb0;
+      }
       /* Paper texture overlay */
       .bg-texture {
         background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+      }
+      .tech-grid {
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      }
+      .art-gradient-text {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(135deg, #2d2d2d 0%, #575757 100%);
+      }
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .writing-mode-vertical {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+      .bg-300 {
+        background-size: 300% 300%;
+      }
+      .animate-marquee {
+        animation: marquee-x 35s linear infinite;
+        will-change: transform;
+      }
+      .animate-marquee-reverse {
+        animation: marquee-x 40s linear infinite reverse;
+        will-change: transform;
+      }
+      @keyframes marquee-x {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      /* Line clamp utilities */
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      /* Smooth transitions */
+      * {
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+      /* Enhanced Typewriter Animation */
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+      .animate-blink {
+        animation: blink 1s step-end infinite;
+      }
+      
+      /* Smooth typewriter with gradient cursor */
+      .typewriter-loop {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        width: 0;
+        animation: typing-loop 5s steps(var(--tw-steps, 4), end) infinite;
+      }
+      
+      .typewriter-loop::after {
+        content: '';
+        position: absolute;
+        right: -3px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, rgba(147, 51, 234, 0.9) 0%, rgba(79, 70, 229, 0.9) 100%);
+        animation: blink-cursor 1s step-end infinite, glow-pulse 2s ease-in-out infinite;
+        box-shadow: 0 0 8px rgba(147, 51, 234, 0.6);
+      }
+      
+      @keyframes typing-loop {
+        0% { 
+          width: 0; 
+        }
+        40% { 
+          width: var(--tw-w, 4em); 
+        }
+        80% { 
+          width: var(--tw-w, 4em); 
+        }
+        100% { 
+          width: 0; 
+        }
+      }
+      
+      @keyframes blink-cursor {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+      
+      @keyframes glow-pulse {
+        0%, 100% { 
+          box-shadow: 0 0 8px rgba(147, 51, 234, 0.6);
+        }
+        50% { 
+          box-shadow: 0 0 16px rgba(147, 51, 234, 0.9), 0 0 24px rgba(147, 51, 234, 0.4);
+        }
       }
     </style>
   <script type="importmap">
@@ -76,10 +266,9 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+  <script type="module" src="/src/index.tsx"></script>
 </body>
 </html>

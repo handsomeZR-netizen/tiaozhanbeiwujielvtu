@@ -28,6 +28,24 @@ dist-ssr
 # Node artifacts
 server/node_modules
 server/dist
+server/uploads
 
 # API examples
 api_example/
+
+# Local docs / showcase workspace
+ui升级/
+AGENTS.md
+PROJECT_STRUCTURE.md
+后端文档.md
+demo-gallery.html
+front-dev.log
+docs/DEPLOY_RAILWAY.md
+cloudflared.exe
+.kiro/
+
+# Generated image records (may contain signed URLs)
+public/showcase/scroll/generation-record.json
+public/showcase/scroll-alt/generation-record.json
+server/testimages/**/generation-record.json
+server/testimages/test-images-record.json

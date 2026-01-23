@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案例画廊预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #1c1917;
+    }
+    .subtitle {
+      color: #78716c;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1c1917;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: #78716c;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      background: #f5f5f4;
+      color: #57534e;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 案例画廊</h1>
+    <p class="subtitle">共 10 个中国文化场景案例</p>
+    <div class="grid" id="gallery"></div>
+  </div>
+
+  <script>
+    const cases = [
+      {
+        id: "lantern-festival",
+        thumbnail: "/demo-images/lantern-festival.jpg",
+        title: "传统灯笼节庆场景",
+        description: "红灯笼挂满古街，夜晚温暖灯光",
+        tags: ["灯笼", "古街", "节庆", "夜景"]
+      },
+      {
+        id: "tea-ceremony",
+        thumbnail: "/demo-images/tea-ceremony.jpg",
+        title: "茶文化与茶艺",
+        description: "紫砂茶壶，竹制茶盘，禅意美学",
+        tags: ["茶艺", "茶道", "传统工艺", "禅意"]
+      },
+      {
+        id: "temple-architecture",
+        thumbnail: "/demo-images/temple-architecture.jpg",
+        title: "寺庙建筑与宗教文化",
+        description: "红墙金瓦，飞檐斗拱，对称构图",
+        tags: ["寺庙", "建筑", "宗教", "古建筑"]
+      },
+      {
+        id: "calligraphy-art",
+        thumbnail: "/demo-images/calligraphy-art.jpg",
+        title: "书法艺术与文房四宝",
+        description: "毛笔字特写，宣纸墨迹，文房四宝",
+        tags: ["书法", "毛笔", "文化", "艺术"]
+      },
+      {
+        id: "dragon-dance",
+        thumbnail: "/demo-images/dragon-dance.jpg",
+        title: "舞龙表演与民俗庆典",
+        description: "金色巨龙，节庆人群，动态瞬间",
+        tags: ["舞龙", "民俗", "庆典", "表演"]
+      },
+      {
+        id: "hutong-alley",
+        thumbnail: "/demo-images/hutong-alley.jpg",
+        title: "胡同生活与传统民居",
+        description: "灰砖四合院，红色大门，生活气息",
+        tags: ["胡同", "四合院", "生活方式", "民居"]
+      },
+      {
+        id: "silk-weaving",
+        thumbnail: "/demo-images/silk-weaving.jpg",
+        title: "丝绸织造传统工艺",
+        description: "传统织布机，彩色丝线，工艺美学",
+        tags: ["丝绸", "织造", "工艺", "手工"]
+      },
+      {
+        id: "opera-mask",
+        thumbnail: "/demo-images/opera-mask.jpg",
+        title: "京剧脸谱与戏曲艺术",
+        description: "红色花脸，精致彩绘，传统艺术",
+        tags: ["京剧", "脸谱", "戏曲", "传统艺术"]
+      },
+      {
+        id: "rice-terrace",
+        thumbnail: "/demo-images/rice-terrace.jpg",
+        title: "梯田农耕文化景观",
+        description: "层层叠叠，绿色稻田，晨雾缭绕",
+        tags: ["梯田", "农耕", "自然", "景观"]
+      },
+      {
+        id: "paper-cutting",
+        thumbnail: "/demo-images/paper-cutting.jpg",
+        title: "剪纸艺术与节庆装饰",
+        description: "红色窗花，精细镂空图案",
+        tags: ["剪纸", "窗花", "民间艺术", "春节"]
+      }
+    ];
+
+    const gallery = document.getElementById('gallery');
+    cases.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${item.thumbnail}" alt="${item.title}" loading="lazy">
+        <div class="card-content">
+          <div class="card-title">${item.title}</div>
+          <div class="card-desc">${item.description}</div>
+          <div class="tags">
+            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `;
+      card.onclick = () => {
+        alert(`选择了案例: ${item.title}\n\n在实际应用中，这会加载该图片到工坊页面进行识别。`);
+      };
+      gallery.appendChild(card);
+    });
+  </script>
+</body>
+</html>
