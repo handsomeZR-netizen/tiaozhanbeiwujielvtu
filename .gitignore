@@ -7,10 +7,23 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+server/node_modules
+
+# Build outputs
 dist
 dist-ssr
+server/dist
+
+# Environment files
 *.local
+.env
+.env.local
+.env.*.local
+server/.env
+server/.env.server
+server/.env.local
 
 # Editor directories and files
 .vscode/*
@@ -22,15 +35,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# OS files
+Thumbs.db
+.DS_Store
+
 # Server runtime
-.env.server
-
-# Node artifacts
-server/node_modules
-server/dist
 server/uploads
+server/back-dev.log
 
-# API examples
+# API examples (contains sensitive data and API keys)
 api_example/
 
 # Local docs / showcase workspace
@@ -42,10 +56,38 @@ demo-gallery.html
 front-dev.log
 docs/DEPLOY_RAILWAY.md
 cloudflared.exe
+
+# Kiro IDE
 .kiro/
+!.kiro/specs/
+
+# Test images (optional, uncomment if you don't want to commit test images)
+# server/testimages/
+
+# Demo files
+public/demo-preview.html
+
+# Database backups
+server/backup-*.json
+*.backup.json
 
 # Generated image records (may contain signed URLs)
 public/showcase/scroll/generation-record.json
 public/showcase/scroll-alt/generation-record.json
 server/testimages/**/generation-record.json
 server/testimages/test-images-record.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# IDE specific
+*.swp
+*.swo
+*~
+
+# Package manager
+.pnpm-debug.log
+.yarn/
+.pnp.*
