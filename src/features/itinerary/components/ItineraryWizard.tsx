@@ -147,12 +147,11 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 5 }}
-                                className="absolute left-0 right-0 top-full mt-2 bg-paper-100 border-2 border-ink rounded shadow-paper z-[100] max-h-60 overflow-y-auto opacity-100"
-                                style={{ opacity: 1 }}
+                                className="absolute left-0 right-0 top-full mt-2 bg-white border-2 border-ink rounded shadow-lg z-[100] max-h-60 overflow-y-auto"
                                 role="listbox"
                                 aria-label="目的地选项"
                             >
-                                <div className="sticky top-0 bg-paper-200 p-2 text-xs font-bold text-ink-light border-b border-ink/10 flex items-center gap-2">
+                                <div className="sticky top-0 bg-stone-100 p-2 text-xs font-bold text-ink border-b border-ink/20 flex items-center gap-2">
                                     <Sparkles size={12} /> 热门推荐
                                 </div>
                                 {POPULAR_CITIES.filter(c => c.name.includes(formData.city) || formData.city === '').map(c => (
@@ -171,7 +170,7 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                         }}
                                         role="option"
                                         aria-selected={formData.city === c.name}
-                                        className="w-full text-left p-3 hover:bg-ink hover:text-paper-100 transition-colors font-serif border-b border-dashed border-ink/10 text-ink last:border-0 active:bg-ink-accent"
+                                        className="w-full text-left p-3 hover:bg-ink hover:text-white transition-colors font-serif border-b border-dashed border-stone-200 text-ink last:border-0 active:bg-ink-accent bg-white"
                                     >
                                         {c.name}
                                     </button>
@@ -179,7 +178,7 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 {formData.city && !POPULAR_CITIES.some(c => c.name === formData.city) && (
                                     <button
                                         onClick={() => setShowCityDropdown(false)}
-                                        className="w-full text-left p-3 text-sm text-ink font-mono border-t border-ink/10 bg-paper-50 hover:bg-paper-200 transition-colors flex items-center gap-2 cursor-pointer"
+                                        className="w-full text-left p-3 text-sm text-ink font-mono border-t border-ink/20 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center gap-2 cursor-pointer"
                                     >
                                         <Feather size={12} /> 确认目的地: "{formData.city}"
                                     </button>
