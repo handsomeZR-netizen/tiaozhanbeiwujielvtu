@@ -25,10 +25,12 @@ export const uploadImageToOSS = async (
       },
     });
     
-    // 返回公网访问URL
-    return result.url;
+    // 强制返回 HTTPS URL（修复 Mixed Content 问题）
+    const httpsUrl = result.url.replace(/^http:\/\//i, 'https://');
+    console.log('✅ Image uploaded successfully:', httpsUrl);
+    return httpsUrl;
   } catch (error) {
-    console.error('Failed to upload to OSS:', error);
+    console.error('❌ Failed to upload to OSS:', error);
     throw error;
   }
 };
