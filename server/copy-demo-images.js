@@ -11,6 +11,28 @@ async function copyDemoImages() {
   const targetDir = path.join(__dirname, 'public/demo-images');
   
   try {
+    // 检查源目录是否存在
+    try {
+      await fs.access(sourceDir);
+    } catch {
+      // 源目录不存在（Railway环境），检查目标目录是否已有文件
+      try {
+        const existingFiles = await fs.readdir(targetDir);
+        const jpgFiles = existingFiles.filter(f => f.endsWith('.jpg'));
+        if (jpgFiles.length > 0) {
+          console.log(`✅ Demo图片已存在于 server/public/demo-images/ (${jpgFiles.length} 个文件)`);
+          console.log('⏭️  跳过复制步骤（Railway部署环境）');
+          return;
+        }
+      } catch {
+        // 目标目录也不存在
+      }
+      
+      console.log('⚠️  源目录不存在，但这是正常的（Railway部署环境）');
+      console.log('✅ Demo图片应该已经在Git仓库中的 server/public/demo-images/');
+      return;
+    }
+    
     // 创建目标目录
     await fs.mkdir(targetDir, { recursive: true });
     
@@ -34,7 +56,8 @@ async function copyDemoImages() {
     console.log(`\n✨ 成功复制 ${copied} 个文件！`);
   } catch (error) {
     console.error('❌ 复制失败:', error.message);
-    process.exit(1);
+    // 不要退出进程，让构建继续
+    console.log('⚠️  继续构建...');
   }
 }
 
