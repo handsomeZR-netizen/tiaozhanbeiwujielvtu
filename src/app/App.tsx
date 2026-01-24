@@ -5,22 +5,20 @@ import { CommunityPage } from '@/features/community/CommunityPage';
 import { DiaryPage } from '@/features/diary/DiaryPage';
 import { HomePage } from '@/features/home/HomePage';
 import { ItineraryPage } from '@/features/itinerary/ItineraryPage';
-import { OnboardingPage } from '@/features/onboarding/OnboardingPage';
 import { ProfileModal } from '@/features/profile/ProfileModal';
 import { ShowcasePage, ShowcaseTarget } from '@/features/showcase/ShowcasePage';
 import { SplashPage } from '@/features/splash/SplashPage';
 import { StudioPage } from '@/features/studio/StudioPage';
 import { Navigation } from '@/shared/components/Navigation';
-import { apiPost, apiRequest } from '@/shared/lib/api';
+import { apiRequest } from '@/shared/lib/api';
 import { readLocal, readLocalString, removeLocal, writeLocalString } from '@/shared/lib/storage';
 import { AUTH_TOKEN_KEY, ONBOARDING_COMPLETED_KEY, USER_KEY, ITINERARY_DRAFT_KEY } from '@/shared/lib/storageKeys';
-import { OnboardingProfile, Tab, UserAccount, ViewState } from '@/shared/types';
+import { Tab, UserAccount, ViewState } from '@/shared/types';
 
 const App: React.FC = () => {
   const [viewState, setViewState] = useState<ViewState>(ViewState.SHOWCASE);
   const [currentTab, setCurrentTab] = useState<Tab>(Tab.HOME);
   const [user, setUser] = useState<UserAccount | null>(null);
-  const [onboardingProfile, setOnboardingProfile] = useState<OnboardingProfile | null>(null);
   const [entryTarget, setEntryTarget] = useState<ShowcaseTarget | null>(null);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -78,17 +76,6 @@ const App: React.FC = () => {
   const handleSplashSkip = () => goToTarget();
 
   const handleItineraryComplete = () => {
-    setViewState(ViewState.ONBOARDING);
-  };
-  
-  const handleOnboardingFinish = async (profile: OnboardingProfile) => {
-    setOnboardingProfile(profile);
-    try {
-      await apiPost('/users/profile', profile);
-    } catch {
-      // ignore
-    }
-    // 标记引导已完成
     writeLocalString(ONBOARDING_COMPLETED_KEY, 'true');
     setOnboardingCompleted(true);
     const postTarget = entryTarget?.type === 'tab' ? entryTarget : { type: 'app' };
@@ -176,11 +163,6 @@ const App: React.FC = () => {
   // 已登录，在行程规划器
   if (viewState === ViewState.ITINERARY_PLANNER) {
     return <ItineraryPage onComplete={handleItineraryComplete} onCancel={() => setViewState(ViewState.APP)} />;
-  }
-
-  // 已登录，在引导页
-  if (viewState === ViewState.ONBOARDING) {
-    return <OnboardingPage onFinish={handleOnboardingFinish} />;
   }
 
   return (
