@@ -54,8 +54,10 @@ PROJECT_STRUCTURE.md
 后端文档.md
 demo-gallery.html
 front-dev.log
-docs/DEPLOY_RAILWAY.md
 cloudflared.exe
+
+# Docs directory (contains sensitive info and local documentation)
+docs/
 
 # Kiro IDE
 .kiro/

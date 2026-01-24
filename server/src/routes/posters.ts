@@ -6,6 +6,7 @@ import { getPool } from '../db.js';
 import { store } from '../store.js';
 import { ok, fail } from '../utils/response.js';
 import { requireAuthUser } from '../utils/auth.js';
+import { uploadImageToOSS } from '../utils/aliyun-oss.js';
 
 type PosterInput = {
   city?: string;
@@ -359,6 +360,8 @@ export const registerPosterRoutes = async (app: FastifyInstance) => {
     const shareFallback = buildShareFallback(body, copyTitle, copySubtitle);
 
     let imageUrl = '';
+    const id = randomUUID();
+    
     if (isMockMode()) {
       imageUrl = `https://picsum.photos/seed/poster-${Date.now()}/1024/1024`;
     } else {
@@ -367,11 +370,33 @@ export const registerPosterRoutes = async (app: FastifyInstance) => {
         : Promise.resolve(shareFallback);
 
       const [result, shareResult] = await Promise.all([generateImage(prompt, size), sharePromise]);
-      imageUrl = extractImageUrl(result);
-      if (!imageUrl) {
+      const tempImageUrl = extractImageUrl(result);
+      
+      if (!tempImageUrl) {
         reply.status(502);
         return fail('Image generation failed.');
       }
+
+      // ✅ 下载图片并上传到阿里云OSS
+      try {
+        console.log('📥 Downloading image from Doubao...');
+        const response = await fetch(tempImageUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to download image: ${response.status}`);
+        }
+        const arrayBuffer = await response.arrayBuffer();
+        
+        console.log('📤 Uploading to Aliyun OSS...');
+        const filename = `${id}.png`;
+        imageUrl = await uploadImageToOSS(Buffer.from(arrayBuffer), filename);
+        console.log('✅ Image uploaded successfully:', imageUrl);
+      } catch (error) {
+        console.error('❌ Failed to upload to OSS:', error);
+        // 降级：使用原始URL（可能会过期）
+        imageUrl = tempImageUrl;
+        console.warn('⚠️  Using temporary URL as fallback');
+      }
+
       shareFallback.shareZh = shareResult.shareZh || shareFallback.shareZh;
       shareFallback.shareEn = shareResult.shareEn || shareFallback.shareEn;
     }
@@ -388,7 +413,7 @@ export const registerPosterRoutes = async (app: FastifyInstance) => {
 
     if (isMockMode()) {
       const entry = {
-        id: `poster_${Date.now()}`,
+        id,
         city: body.city,
         theme: body.theme,
         style: body.style,
@@ -415,7 +440,6 @@ export const registerPosterRoutes = async (app: FastifyInstance) => {
     }
 
     const db = getPool();
-    const id = randomUUID();
     const created = await db.query(
       `INSERT INTO posters (id, user_id, city, theme, style, language, platform, size, prompt_raw, prompt_polished, prompt, image_url,
                             copy_title, copy_subtitle, copy_title_raw, copy_subtitle_raw, copy_title_polished, copy_subtitle_polished,
