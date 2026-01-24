@@ -33,7 +33,27 @@ export function useItineraryForm() {
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
 
   const updateField = <K extends keyof ItineraryForm>(field: K, value: ItineraryForm[K]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const updated = { ...prev, [field]: value };
+      
+      // Auto-calculate endDate when startDate or days change
+      if (field === 'startDate' || field === 'days') {
+        const startDate = field === 'startDate' ? value as string : prev.startDate;
+        const days = field === 'days' ? value as number : prev.days;
+        
+        if (startDate && days > 0) {
+          const start = new Date(startDate);
+          if (!isNaN(start.getTime())) {
+            const end = new Date(start);
+            end.setDate(end.getDate() + days - 1);
+            updated.endDate = end.toISOString().split('T')[0];
+          }
+        }
+      }
+      
+      return updated;
+    });
+    
     // Clear error for this field when user updates it
     if (errors[field as keyof FormErrors]) {
       setErrors((prev) => {

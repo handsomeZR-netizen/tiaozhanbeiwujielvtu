@@ -147,7 +147,7 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 5 }}
-                                className="absolute left-0 right-0 top-full mt-2 bg-paper-100 border-2 border-ink rounded shadow-paper z-50 max-h-60 overflow-y-auto"
+                                className="absolute left-0 right-0 top-full mt-2 bg-paper-100 border-2 border-ink rounded shadow-paper z-[100] max-h-60 overflow-y-auto"
                                 role="listbox"
                                 aria-label="目的地选项"
                             >
@@ -170,7 +170,7 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                         }}
                                         role="option"
                                         aria-selected={formData.city === c.name}
-                                        className="w-full text-left p-3 hover:bg-ink hover:text-paper-100 transition-colors font-serif border-b border-dashed border-ink/10 text-ink last:border-0"
+                                        className="w-full text-left p-3 hover:bg-ink hover:text-paper-100 transition-colors font-serif border-b border-dashed border-ink/10 text-ink last:border-0 active:bg-ink-accent"
                                     >
                                         {c.name}
                                     </button>
@@ -273,8 +273,8 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 aria-checked={formData.travelers.type === item.id}
                                 className={`py-2.5 sm:py-3 rounded text-xs sm:text-sm font-bold transition-all border-2 ${
                                     formData.travelers.type === item.id
-                                    ? 'border-ink text-ink bg-paper-200' 
-                                    : 'border-transparent bg-paper-100 text-ink-light hover:bg-paper-200 shadow-neu-flat'
+                                    ? 'border-ink text-ink bg-paper-200 shadow-neu-pressed' 
+                                    : 'border-transparent bg-paper-100 text-ink-light hover:bg-paper-200 hover:text-ink shadow-neu-flat active:shadow-neu-pressed active:translate-y-[1px]'
                                 }`}
                              >
                                 {item.label}
@@ -361,8 +361,8 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 aria-checked={formData.intensity === item.id}
                                 className={`flex-1 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-bold transition-all ${
                                     formData.intensity === item.id
-                                    ? 'bg-paper-50 shadow-neu-flat text-ink'
-                                    : 'text-ink-light opacity-60 hover:opacity-100'
+                                    ? 'bg-paper-50 shadow-neu-flat text-ink scale-[0.98]'
+                                    : 'text-ink-light opacity-60 hover:opacity-100 active:scale-[0.98]'
                                 }`}
                              >
                                 {item.label}
@@ -404,8 +404,8 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                     aria-label={`预算: ${item.label}`}
                                     className={`p-4 rounded border-2 transition-all ${
                                         formData.budget === item.id
-                                        ? 'border-ink bg-paper-200 shadow-neu-pressed' 
-                                        : 'border-transparent bg-paper-100 shadow-neu-flat'
+                                        ? 'border-ink bg-paper-200 shadow-neu-pressed translate-y-[1px]' 
+                                        : 'border-transparent bg-paper-100 shadow-neu-flat hover:bg-paper-200 active:shadow-neu-pressed active:translate-y-[1px]'
                                     }`}
                                 >
                                     <div className="flex flex-col items-center gap-2">
@@ -429,8 +429,8 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                     aria-checked={formData.transport === t.id}
                                     className={`px-6 py-3 rounded text-sm font-bold border-2 transition-all ${
                                         formData.transport === t.id
-                                        ? 'border-ink bg-paper-200 shadow-neu-pressed text-ink'
-                                        : 'border-transparent bg-paper-100 shadow-neu-flat text-ink-light'
+                                        ? 'border-ink bg-paper-200 shadow-neu-pressed text-ink translate-y-[1px]'
+                                        : 'border-transparent bg-paper-100 shadow-neu-flat text-ink-light hover:text-ink hover:bg-paper-200 active:shadow-neu-pressed active:translate-y-[1px]'
                                     }`}
                                 >
                                     {t.label}
@@ -515,8 +515,10 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                  <button 
                     onClick={handleNext}
                     disabled={!isStepValid()}
-                    className={`flex items-center gap-2 px-6 sm:px-8 py-2 sm:py-3 rounded-sm font-bold border-2 border-ink transition-all shadow-neu-btn hover:-translate-y-0.5 active:translate-y-0 active:shadow-neu-btn-active text-sm ${
-                        !isStepValid() ? 'opacity-50 cursor-not-allowed bg-paper-200 text-ink-light' : 'bg-paper-50 text-ink'
+                    className={`flex items-center gap-2 px-6 sm:px-8 py-2 sm:py-3 rounded-sm font-bold border-2 transition-all text-sm ${
+                        !isStepValid() 
+                          ? 'opacity-40 cursor-not-allowed bg-paper-200 text-ink-light border-paper-300' 
+                          : 'bg-paper-50 text-ink border-ink shadow-neu-btn hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:shadow-neu-btn-active'
                     }`}
                 >
                     下一步 <ArrowRight size={16} />

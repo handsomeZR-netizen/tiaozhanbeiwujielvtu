@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ItineraryForm, ItineraryRecord } from '../itinerary.types';
 import { apiPost, ApiError } from '@/shared/lib/api';
 import { readLocalString } from '@/shared/lib/storage';
@@ -9,6 +9,16 @@ export function useItineraryGenerator() {
   const [result, setResult] = useState<ItineraryRecord | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [retryForm, setRetryForm] = useState<ItineraryForm | null>(null);
+
+  // Auto-clear error after 8 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const startGeneration = async (form: ItineraryForm) => {
     // Check authentication

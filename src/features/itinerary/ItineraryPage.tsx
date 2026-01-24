@@ -41,7 +41,7 @@ export const ItineraryPage: React.FC<ItineraryPageProps> = ({ onComplete, onCanc
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-md w-full mx-4"
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] max-w-md w-full mx-4"
           >
             <div className="bg-red-50 border-2 border-red-200 rounded-sm shadow-float p-4 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -50,7 +50,7 @@ export const ItineraryPage: React.FC<ItineraryPageProps> = ({ onComplete, onCanc
                 {retry && (
                   <button
                     onClick={handleRetry}
-                    className="mt-2 text-xs font-bold text-red-700 hover:text-red-900 underline"
+                    className="mt-2 text-xs font-bold text-red-700 hover:text-red-900 underline transition-colors"
                   >
                     重试
                   </button>
@@ -58,7 +58,8 @@ export const ItineraryPage: React.FC<ItineraryPageProps> = ({ onComplete, onCanc
               </div>
               <button
                 onClick={clearError}
-                className="text-red-400 hover:text-red-600 transition-colors"
+                className="text-red-400 hover:text-red-600 transition-colors flex-shrink-0"
+                aria-label="关闭错误提示"
               >
                 <X className="w-4 h-4" />
               </button>
