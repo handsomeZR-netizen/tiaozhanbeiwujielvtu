@@ -147,7 +147,8 @@ export const ItineraryWizard: React.FC<WizardProps> = ({ onComplete, onCancel })
                                 initial={{ opacity: 0, y: 5 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 5 }}
-                                className="absolute left-0 right-0 top-full mt-2 bg-paper-100 border-2 border-ink rounded shadow-paper z-[100] max-h-60 overflow-y-auto"
+                                className="absolute left-0 right-0 top-full mt-2 bg-paper-100 border-2 border-ink rounded shadow-paper z-[100] max-h-60 overflow-y-auto opacity-100"
+                                style={{ opacity: 1 }}
                                 role="listbox"
                                 aria-label="目的地选项"
                             >
