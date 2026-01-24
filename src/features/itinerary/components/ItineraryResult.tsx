@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, MapPin, DollarSign, Clock, Navigation, 
-  Share2, Download, Edit3, Save, ChevronDown, ChevronUp, Star, ArrowLeft 
+  Share2, Download, Edit3, Save, ChevronDown, ChevronUp, Star, ArrowLeft, X, Check 
 } from 'lucide-react';
 import { ItineraryRecord, ItineraryDay, ItineraryActivity } from '../itinerary.types';
 
 interface ItineraryResultProps {
   data: ItineraryRecord;
   onBack: () => void;
+  onExit?: () => void;
 }
 
 const ActivityCard: React.FC<{ activity: ItineraryActivity }> = ({ activity }) => {
@@ -128,9 +129,88 @@ const DaySection = ({ day }: { day: ItineraryDay }) => (
     </section>
 );
 
-export const ItineraryResult: React.FC<ItineraryResultProps> = ({ data, onBack }) => {
+export const ItineraryResult: React.FC<ItineraryResultProps> = ({ data, onBack, onExit }) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // 保存到数据库（已经在生成时保存了，这里只是显示反馈）
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveError(null);
+    
+    try {
+      // 数据已经在生成时保存到数据库了
+      // 这里只是给用户一个反馈
+      await new Promise(resolve => setTimeout(resolve, 800));
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (error) {
+      setSaveError('保存失败，请重试');
+      setTimeout(() => setSaveError(null), 3000);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // 下载为 JSON 文件
+  const handleDownload = () => {
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `行程-${data.form.city}-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen pb-32 bg-paper-100" role="main" aria-label="行程结果">
+        
+        {/* Exit Button - 固定在右上角 */}
+        {onExit && (
+          <button
+            onClick={onExit}
+            className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 rounded-sm bg-paper-50 border border-stone-200 text-ink-light hover:text-ink hover:bg-paper-100 transition-all shadow-sm hover:shadow-md group"
+            aria-label="退出行程规划"
+          >
+            <X size={18} className="group-hover:rotate-90 transition-transform duration-300" />
+            <span className="text-sm font-bold hidden sm:inline">退出</span>
+          </button>
+        )}
+
+        {/* Save Success Toast */}
+        <AnimatePresence>
+          {saveSuccess && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] max-w-md w-full mx-4"
+            >
+              <div className="bg-green-50 border-2 border-green-200 rounded-sm shadow-float p-4 flex items-center gap-3">
+                <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <p className="text-sm font-serif text-green-900">行程已保存到您的账户</p>
+              </div>
+            </motion.div>
+          )}
+          {saveError && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-4 left-1/2 -translate-x-1/2 z-[9999] max-w-md w-full mx-4"
+            >
+              <div className="bg-red-50 border-2 border-red-200 rounded-sm shadow-float p-4 flex items-center gap-3">
+                <X className="w-5 h-5 text-red-600 flex-shrink-0" />
+                <p className="text-sm font-serif text-red-900">{saveError}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         {/* Header Summary (Postcard Style) */}
         <header className="relative bg-paper-200 border-b border-ink/10 pt-12 pb-24 overflow-hidden">
@@ -204,9 +284,24 @@ export const ItineraryResult: React.FC<ItineraryResultProps> = ({ data, onBack }
         {/* Sticky Action Bar (Floating Toolbox) */}
         <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-40" aria-label="行程操作">
             <div className="bg-paper-50 border-2 border-ink rounded shadow-paper flex justify-between items-center px-6 py-3">
-                <button className="flex flex-col items-center gap-1 text-ink-light hover:text-ink transition-colors group" aria-label="保存行程">
-                    <Save size={20} className="group-hover:scale-110 transition-transform" aria-hidden="true" /> 
-                    <span className="text-[10px] font-bold">保存</span>
+                <button 
+                  onClick={handleSave}
+                  disabled={isSaving || saveSuccess}
+                  className={`flex flex-col items-center gap-1 transition-colors group ${
+                    saveSuccess 
+                      ? 'text-green-600' 
+                      : isSaving 
+                        ? 'text-ink-light/50 cursor-wait' 
+                        : 'text-ink-light hover:text-ink'
+                  }`}
+                  aria-label="保存行程"
+                >
+                    {saveSuccess ? (
+                      <Check size={20} className="text-green-600" aria-hidden="true" />
+                    ) : (
+                      <Save size={20} className={`${!isSaving && 'group-hover:scale-110'} transition-transform ${isSaving && 'animate-pulse'}`} aria-hidden="true" />
+                    )}
+                    <span className="text-[10px] font-bold">{saveSuccess ? '已保存' : isSaving ? '保存中' : '保存'}</span>
                 </button>
                 <div className="w-px h-8 bg-ink/10" aria-hidden="true" />
                 <button className="flex flex-col items-center gap-1 text-ink-light hover:text-ink transition-colors group" aria-label="编辑行程">
@@ -219,9 +314,13 @@ export const ItineraryResult: React.FC<ItineraryResultProps> = ({ data, onBack }
                     <span className="text-[10px] font-bold">分享</span>
                 </button>
                 <div className="w-px h-8 bg-ink/10" aria-hidden="true" />
-                <button className="flex flex-col items-center gap-1 text-ink-accent hover:text-ink-accent/80 transition-colors group" aria-label="导出PDF">
+                <button 
+                  onClick={handleDownload}
+                  className="flex flex-col items-center gap-1 text-ink-accent hover:text-ink-accent/80 transition-colors group active:scale-95" 
+                  aria-label="下载行程"
+                >
                     <Download size={20} className="group-hover:scale-110 transition-transform" aria-hidden="true" /> 
-                    <span className="text-[10px] font-bold">导出PDF</span>
+                    <span className="text-[10px] font-bold">下载</span>
                 </button>
             </div>
         </nav>

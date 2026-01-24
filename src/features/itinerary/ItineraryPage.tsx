@@ -78,7 +78,7 @@ export const ItineraryPage: React.FC<ItineraryPageProps> = ({ onComplete, onCanc
         )}
         
         {result && (
-          <ItineraryResult key="result" data={result} onBack={handleBack} />
+          <ItineraryResult key="result" data={result} onBack={handleBack} onExit={onComplete} />
         )}
       </AnimatePresence>
     </div>
