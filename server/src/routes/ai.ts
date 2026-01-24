@@ -106,18 +106,22 @@ const buildPublicBase = (request: FastifyRequest) => {
 const resolveImageUrl = async (request: FastifyRequest, imageUrl?: string, logger?: any) => {
   if (!imageUrl) return undefined;
   
-  // 如果已经是完整的HTTP(S) URL，直接返回
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  // 如果已经是base64格式，直接返回（豆包API支持base64）
+  if (imageUrl.startsWith('data:image/')) {
     return imageUrl;
   }
   
-  // 如果是base64格式，保存并返回公共URL
-  if (imageUrl.startsWith('data:image/')) {
-    const { filename } = await saveDataUrl(imageUrl);
-    return `${buildPublicBase(request)}/uploads/${filename}`;
+  // 如果是完整的HTTPS URL（OSS等），直接返回
+  if (imageUrl.startsWith('https://')) {
+    return imageUrl;
   }
   
-  // 如果是本地路径（如 /demo-images/xxx.jpg），转换为 base64
+  // 如果是HTTP URL，也直接返回（但豆包可能不支持）
+  if (imageUrl.startsWith('http://')) {
+    return imageUrl;
+  }
+  
+  // 如果是本地路径（如 /demo-images/xxx.jpg），尝试从多个位置读取并转换为 base64
   if (imageUrl.startsWith('/demo-images/') || imageUrl.startsWith('/uploads/')) {
     try {
       const fs = await import('fs/promises');
@@ -125,39 +129,68 @@ const resolveImageUrl = async (request: FastifyRequest, imageUrl?: string, logge
       const { fileURLToPath } = await import('url');
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       
-      // 构建文件路径 - 从 server/src/routes 向上到项目根目录
-      let filePath: string;
+      // 尝试多个可能的路径
+      const possiblePaths: string[] = [];
+      
       if (imageUrl.startsWith('/demo-images/')) {
-        // 从 server/src/routes -> server/src -> server -> 项目根 -> public
-        filePath = path.join(__dirname, '../../../public', imageUrl);
+        // 路径1: server/src/routes -> 项目根 -> public/demo-images
+        possiblePaths.push(path.join(__dirname, '../../../public', imageUrl));
+        // 路径2: server/src/routes -> server/public/demo-images（如果复制了）
+        possiblePaths.push(path.join(__dirname, '../../public', imageUrl));
+        // 路径3: 直接从 server 根目录
+        possiblePaths.push(path.join(__dirname, '../..', imageUrl));
       } else {
         // uploads 在 server 目录下
-        filePath = path.join(__dirname, '../../..', imageUrl);
+        possiblePaths.push(path.join(__dirname, '../../..', imageUrl));
+        possiblePaths.push(path.join(__dirname, '../..', imageUrl));
       }
       
-      // 读取文件并转换为 base64
-      const fileBuffer = await fs.readFile(filePath);
-      const base64 = fileBuffer.toString('base64');
-      const ext = path.extname(imageUrl).toLowerCase();
-      const mimeType = ext === '.png' ? 'image/png' : ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/jpeg';
+      // 尝试读取文件
+      let fileBuffer: Buffer | null = null;
+      let successPath: string | null = null;
       
-      return `data:${mimeType};base64,${base64}`;
+      for (const filePath of possiblePaths) {
+        try {
+          fileBuffer = await fs.readFile(filePath);
+          successPath = filePath;
+          break;
+        } catch {
+          // 继续尝试下一个路径
+        }
+      }
+      
+      if (fileBuffer) {
+        const base64 = fileBuffer.toString('base64');
+        const ext = path.extname(imageUrl).toLowerCase();
+        const mimeType = ext === '.png' ? 'image/png' : ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/jpeg';
+        
+        if (logger) {
+          logger.info({ imageUrl, successPath }, 'Successfully read local image file');
+        }
+        
+        return `data:${mimeType};base64,${base64}`;
+      } else {
+        throw new Error(`File not found in any of the attempted paths`);
+      }
     } catch (error: any) {
       if (logger) {
         logger.warn({ error: error.message, imageUrl }, 'Failed to read local image file');
       }
-      // 如果读取失败，回退到公共URL
-      return `${buildPublicBase(request)}${imageUrl}`;
+      // 读取失败，返回undefined让调用方处理
+      return undefined;
     }
   }
   
-  // 如果是相对路径，转换为完整URL
+  // 如果是相对路径，尝试转换为完整URL（但这可能不被豆包接受）
   if (imageUrl.startsWith('/')) {
+    if (logger) {
+      logger.warn({ imageUrl }, 'Relative path provided, may not work with Doubao API');
+    }
     return `${buildPublicBase(request)}${imageUrl}`;
   }
   
-  // 其他情况，尝试作为相对路径处理
-  return `${buildPublicBase(request)}/${imageUrl}`;
+  // 其他情况，返回undefined
+  return undefined;
 };
 
 export const registerAiRoutes = async (app: FastifyInstance) => {
@@ -264,7 +297,21 @@ export const registerAiRoutes = async (app: FastifyInstance) => {
 
     try {
       const resolvedUrl = await resolveImageUrl(request, body?.imageUrl, app.log);
-      app.log.info({ imageUrl: body?.imageUrl, resolvedUrl }, 'Processing culture request');
+      
+      if (!resolvedUrl) {
+        app.log.error({ imageUrl: body?.imageUrl }, 'Failed to resolve image URL');
+        return ok({
+          result: normalizeCultureResult(cultureMockResult),
+          raw: '',
+          warning: 'image_url_resolution_failed',
+        });
+      }
+      
+      app.log.info({ 
+        imageUrl: body?.imageUrl, 
+        resolvedUrlType: resolvedUrl.startsWith('data:') ? 'base64' : 'url',
+        resolvedUrlLength: resolvedUrl.length 
+      }, 'Processing culture request');
       
       const response = await multimodalDescribe({
         text: prompt,
