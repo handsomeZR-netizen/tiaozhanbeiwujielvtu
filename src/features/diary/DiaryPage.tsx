@@ -81,10 +81,10 @@ export const DiaryPage: React.FC = () => {
     if (!canGenerate || isGenerating || loading) return;
     setIsGenerating(true);
     setThinkingSteps([
-      { id: 1, text: 'Analyze travel narrative', status: 'active' },
-      { id: 2, text: 'Blend style and keywords', status: 'pending' },
-      { id: 3, text: 'Render scene and lighting', status: 'pending' },
-      { id: 4, text: 'Generate share copy', status: 'pending' },
+      { id: 1, text: '分析旅行叙事', status: 'active' },
+      { id: 2, text: '融合风格与关键词', status: 'pending' },
+      { id: 3, text: '渲染场景与光影', status: 'pending' },
+      { id: 4, text: '生成分享文案', status: 'pending' },
     ]);
 
     stepTimers.current.forEach((timer) => window.clearTimeout(timer));
